@@ -5,6 +5,7 @@ import withAuth from '../components/withAuth';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image'; // Added for image optimization
 import { Button } from '@/components/ui/button';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
 import { Input } from '@/components/ui/input';
@@ -33,9 +34,9 @@ const AdminPage = () => {
   const router = useRouter();
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [currentApplicant, setCurrentApplicant] = useState<Applicant | null>(null);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const AdminPage = () => {
       setApplicants(response.data);
     } catch (error) {
       console.error('Failed to fetch applicants', error);
+      // Optional: Show user feedback or notification here
     }
   };
 
@@ -58,6 +60,7 @@ const AdminPage = () => {
       setCategories(response.data);
     } catch (error) {
       console.error('Failed to fetch categories', error);
+      // Optional: Show user feedback or notification here
     }
   };
 
@@ -85,6 +88,7 @@ const AdminPage = () => {
       fetchApplicants();
     } catch (error) {
       console.error('Failed to delete applicant', error);
+      // Optional: Show user feedback or notification here
     }
   };
 
@@ -133,8 +137,8 @@ const AdminPage = () => {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
-                  <img
+                <Button aria-haspopup="true" aria-label="User menu" variant="outline" size="icon" className="overflow-hidden rounded-full">
+                  <Image
                     src="/user.png"
                     width={36}
                     height={36}
@@ -187,7 +191,7 @@ const AdminPage = () => {
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button aria-haspopup="true" size="icon" variant="ghost">
+                              <Button aria-haspopup="true" aria-label="Actions" size="icon" variant="ghost">
                                 <MoveHorizontalIcon className="w-4 h-4" />
                                 <span className="sr-only">Actions</span>
                               </Button>
