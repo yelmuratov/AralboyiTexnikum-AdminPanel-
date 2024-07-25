@@ -46,7 +46,7 @@ const AdminPage = () => {
 
   const fetchApplicants = async () => {
     try {
-      const response = await axios.get<Applicant[]>('https://apiaralboyitexnikum.uz/admission/applicants/');
+      const response = await axios.get<Applicant[]>('https://api.aralboyitexnikum.uz/admission/applicants/');
       setApplicants(response.data);
     } catch (error) {
       console.error('Failed to fetch applicants', error);
@@ -56,7 +56,7 @@ const AdminPage = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get<{ id: number; name: string }[]>('https://apiaralboyitexnikum.uz/admission/categories/');
+      const response = await axios.get<{ id: number; name: string }[]>('https://api.aralboyitexnikum.uz/admission/categories/');
       setCategories(response.data);
     } catch (error) {
       console.error('Failed to fetch categories', error);
@@ -84,7 +84,7 @@ const AdminPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`https://apiaralboyitexnikum.uz/admission/applicants/${id}/`);
+      await axios.delete(`https://api.aralboyitexnikum.uz/admission/applicants/${id}/`);
       fetchApplicants();
     } catch (error) {
       console.error('Failed to delete applicant', error);
@@ -95,6 +95,21 @@ const AdminPage = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     router.push('/login');
+  };
+
+  const handleDownloadApplicants = async () => {
+    try {
+      const response = await axios.get('https://api.aralboyitexnikum.uz/admission/export/');
+      const { file_url } = response.data;
+
+      const link = document.createElement('a');
+      link.href = `https://api.aralboyitexnikum.uz${file_url}`;
+      link.download = 'applicants.xlsx';
+      link.click();
+    } catch (error) {
+      console.error('Failed to download applicants', error);
+      // Optional: Show user feedback or notification here
+    }
   };
 
   const filteredApplicants = applicants.filter(applicant =>
@@ -150,8 +165,9 @@ const AdminPage = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem className='cursor-pointer' onClick={handleDownloadApplicants}>Download applicants</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
