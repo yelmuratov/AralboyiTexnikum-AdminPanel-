@@ -42,7 +42,7 @@ export default function LoginComponent() {
 
     try {
       const response = await axios.post(
-        "https://aralboyitexnikum.uz/api/backend/users/login/",
+        "https://api.aralboyitexnikum.uz/users/login/",
         {
           username,
           password,
@@ -63,12 +63,12 @@ export default function LoginComponent() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // or a loading spinner
+    return <div className="text-white">Loading...</div>; // or a loading spinner
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-background">
-      <Card className="w-full max-w-md">
+    <div className="flex px-4 h-screen items-center justify-center bg-gray-900">
+      <Card className="w-full max-w-md bg-gray-800 text-white">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
         </CardHeader>
@@ -78,26 +78,28 @@ export default function LoginComponent() {
           )}
           <form onSubmit={handleSubmit}>
             <div className="space-y-2 mb-4">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username" className="text-white">Username</Label>
               <Input
                 id="username"
                 type="text"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className="bg-gray-700 text-white"
               />
             </div>
             <div className="space-y-2 mb-4">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-white">Password</Label>
               <Input
                 id="password"
                 type="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="bg-gray-700 text-white"
               />
             </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                 Sign in
               </Button>
           </form>

@@ -46,7 +46,7 @@ const AdminPage = () => {
 
   const fetchApplicants = async () => {
     try {
-      const response = await axios.get<Applicant[]>('https://aralboyitexnikum.uz/api/backend/admission/applicants/');
+      const response = await axios.get<Applicant[]>('https://apiaralboyitexnikum.uz/admission/applicants/');
       setApplicants(response.data);
     } catch (error) {
       console.error('Failed to fetch applicants', error);
@@ -56,7 +56,7 @@ const AdminPage = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get<{ id: number; name: string }[]>('https://aralboyitexnikum.uz/api/backend/admission/categories/');
+      const response = await axios.get<{ id: number; name: string }[]>('https://apiaralboyitexnikum.uz/admission/categories/');
       setCategories(response.data);
     } catch (error) {
       console.error('Failed to fetch categories', error);
@@ -84,7 +84,7 @@ const AdminPage = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`https://aralboyitexnikum.uz/api/backend/admission/applicants/${id}/`);
+      await axios.delete(`https://apiaralboyitexnikum.uz/admission/applicants/${id}/`);
       fetchApplicants();
     } catch (error) {
       console.error('Failed to delete applicant', error);

@@ -42,7 +42,7 @@ export default function LoginComponent() {
 
     try {
       const response = await axios.post(
-        "https://aralboyitexnikum.uz/api/backend/users/login/",
+        "https://api.aralboyitexnikum.uz/users/login/",
         {
           username,
           password,
@@ -63,12 +63,12 @@ export default function LoginComponent() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // or a loading spinner
+    return <div className="text-white">Loading...</div>; // or a loading spinner
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-background">
-      <Card className="w-full max-w-md">
+    <div className="flex h-screen px-4 items-center justify-center bg-gray-900">
+      <Card className="w-full max-w-md bg-gray-800 text-white">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
         </CardHeader>
@@ -85,6 +85,7 @@ export default function LoginComponent() {
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className="bg-gray-700 text-white"
               />
             </div>
             <div className="space-y-2 mb-4">
@@ -95,9 +96,10 @@ export default function LoginComponent() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="bg-gray-700 text-white"
               />
             </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
                 Sign in
               </Button>
           </form>
