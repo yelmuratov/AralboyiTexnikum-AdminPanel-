@@ -35,6 +35,9 @@ const AdminPage = () => {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [categoryFilter, setCategoryFilter] = useState<number | undefined>(undefined);
+  const [startDate, setStartDate] = useState<string | undefined>(undefined);
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [currentApplicant, setCurrentApplicant] = useState<Applicant | null>(null);
@@ -99,7 +102,12 @@ const AdminPage = () => {
 
   const handleDownloadApplicants = async () => {
     try {
-      const response = await axios.get('https://api.aralboyitexnikum.uz/admission/export/');
+      const params = new URLSearchParams();
+      if (categoryFilter) params.append('category_id', categoryFilter.toString());
+      if (startDate) params.append('start_date', startDate);
+      if (endDate) params.append('end_date', endDate);
+
+      const response = await axios.get(`https://api.aralboyitexnikum.uz/admission/export/?${params.toString()}`);
       const { file_url } = response.data;
 
       const link = document.createElement('a');
@@ -165,8 +173,6 @@ const AdminPage = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer' onClick={handleDownloadApplicants}>Download applicants</DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -179,6 +185,30 @@ const AdminPage = () => {
               </CardHeader>
               <CardContent>
                 <Button className="mb-4" onClick={openAddModal}>Add Applicant</Button>
+                <div className="flex gap-4 mb-4">
+                  <Input
+                    type="number"
+                    placeholder="Category ID"
+                    value={categoryFilter ?? ''}
+                    onChange={(e) => setCategoryFilter(e.target.value ? parseInt(e.target.value) : undefined)}
+                    className="w-full"
+                  />
+                  <Input
+                    type="date"
+                    placeholder="Start Date (YYYY-MM-DD)"
+                    value={startDate ?? ''}
+                    onChange={(e) => setStartDate(e.target.value || undefined)}
+                    className="w-full"
+                  />
+                  <Input
+                    type="date"
+                    placeholder="End Date (YYYY-MM-DD)"
+                    value={endDate ?? ''}
+                    onChange={(e) => setEndDate(e.target.value || undefined)}
+                    className="w-full"
+                  />
+                  <Button onClick={handleDownloadApplicants}>Download Applicants</Button>
+                </div>
                 <Table>
                   <TableHeader>
                     <TableRow>
